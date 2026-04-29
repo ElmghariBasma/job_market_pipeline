@@ -1,0 +1,13 @@
+emploi_maroc:
+  outputs:
+    dev:
+      account: emgfqhx-tg96851
+      database: emploi_maroc
+      password: 'CGeH8uRfSGFwLaz'
+      role: ACCOUNTADMIN
+      schema: bronze
+      threads: 4
+      type: snowflake
+      user: Basma
+      warehouse: emploi_wh
+  target: dev

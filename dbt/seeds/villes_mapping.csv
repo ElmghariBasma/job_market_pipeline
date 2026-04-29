@@ -1,0 +1,31 @@
+ville_raw,ville_normalisee,region
+casablanca,Casablanca,Casablanca-Settat
+casa,Casablanca,Casablanca-Settat
+rabat,Rabat,Rabat-Salé-Kénitra
+salé,Salé,Rabat-Salé-Kénitra
+sale,Salé,Rabat-Salé-Kénitra
+technopolis,Rabat,Rabat-Salé-Kénitra
+salé technopolis,Rabat,Rabat-Salé-Kénitra
+marrakech,Marrakech,Marrakech-Safi
+fes,Fès,Fès-Meknès
+fès,Fès,Fès-Meknès
+tanger,Tanger,Tanger-Tétouan-Al Hoceïma
+tetouan,Tétouan,Tanger-Tétouan-Al Hoceïma
+tétouan,Tétouan,Tanger-Tétouan-Al Hoceïma
+agadir,Agadir,Souss-Massa
+kenitra,Kénitra,Rabat-Salé-Kénitra
+kénitra,Kénitra,Rabat-Salé-Kénitra
+meknes,Meknès,Fès-Meknès
+meknès,Meknès,Fès-Meknès
+oujda,Oujda,Oriental
+temara,Témara,Rabat-Salé-Kénitra
+témara,Témara,Rabat-Salé-Kénitra
+mohammedia,Mohammedia,Casablanca-Settat
+bouskoura,Casablanca,Casablanca-Settat
+ain sebaa,Casablanca,Casablanca-Settat
+ain-sebaa,Casablanca,Casablanca-Settat
+berrechid,Berrechid,Casablanca-Settat
+settat,Settat,Casablanca-Settat
+el jadida,El Jadida,Casablanca-Settat
+laayoune,Laâyoune,Laâyoune-Sakia El Hamra
+dakhla,Dakhla,Dakhla-Oued Ed-Dahab

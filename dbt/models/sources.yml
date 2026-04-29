@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: EMPLOI_MAROC
+    schema: BRONZE
+    tables:
+      - name: raw_jobs
+        description: "Données brutes scrapées depuis Rekrute.ma (JSON VARIANT)"
+        columns:
+          - name: id
+            description: "Clé primaire auto-incrémentée"
+          - name: raw_json
+            description: "L'offre complète au format JSON/VARIANT Snowflake"

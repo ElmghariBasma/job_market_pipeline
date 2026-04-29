@@ -1,0 +1,22 @@
+name: 'emploi_maroc'
+version: '1.0.0'
+config-version: 2
+
+profile: 'emploi_maroc'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  emploi_maroc:
+    silver:
+      +materialized: table
+      +schema: silver
+    gold:
+      +materialized: table
+      +schema: gold
