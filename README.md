@@ -1,4 +1,4 @@
-# Plateforme d'Analyse du Marché de l'Emploi Tech au Maroc
+# Plateforme d'Analyse du Marché de l'Emploi au Maroc
 
 ![Architecture ELT](docs/screenshots/airflow_dag.png)
 
@@ -189,68 +189,10 @@ job_market_pipeline/
 - 🔗 Lien interactif : Power BI Service
 
 ### KPIs disponibles
-- Top compétences par région  
-- Villes les plus dynamiques (carte)  
+- Top compétences par région   
 - Répartition des types de contrat  
 - Évolution temporelle des offres  
 
----
 
-## 🔧 Difficultés rencontrées et solutions
 
-| Problème                          | Solution |
-|----------------------------------|----------|
-| Anti-scraping du site           | User-Agent réaliste + délais aléatoires |
-| Docker lent sur Windows         | Utilisation locale pour debug |
-| Scripts exécutés automatiquement| `if __name__ == "__main__"` |
-| Doublons                        | Déduplication par URL |
-| dbt non configuré               | Création manuelle des fichiers |
 
----
-
-## 📈 Perspectives d'amélioration
-
-| Court terme         | Moyen terme              | Long terme            |
-|--------------------|--------------------------|----------------------|
-| Ajouter Elasticsearch | Intégrer Indeed/Emploi.ma | Pipeline temps réel |
-| Alertes email        | Détection des salaires   | Analyse NLP |
-| Tests dbt            | Dashboard en ligne       | Déploiement cloud |
-
----
-
-## 👥 Auteurs
-
-| Nom               | Rôle |
-|------------------|------|
-| Basma Elmghari   | Extraction, Orchestration, Data Warehouse |
-| [Nom collègue]   | Transformation, Visualisation |
-
----
-
-## 📅 Soutenance
-
-- Date : [à compléter]  
-- Durée : 45-60 minutes  
-- Support : [lien slides]  
-
----
-
-## 📄 Licence
-
-Projet sous licence MIT.
-
----
-
-## 🙏 Remerciements
-
-- rekrute.ma (usage académique)  
-- Snowflake (compte gratuit)  
-- Apache Airflow  
-- dbt Labs  
-
----
-
-## 📞 Contact
-
-- GitHub : ElmghariBasma  
-- Email : [votre email]  
