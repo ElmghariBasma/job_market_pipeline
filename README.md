@@ -1,66 +1,59 @@
-# Plateforme d'Analyse du Marché de l'Emploi au Maroc
+# Plateforme d'Analyse du Marché de l'Emploi Tech au Maroc
 
-![Architecture ELT](docs/screenshots/architecture.png)
+![Architecture ELT](docs/screenshots/airflow_dag.png)
 
 ## 📋 Description
 
-Ce projet met en place un **pipeline ELT automatisé** pour analyser le marché de l'emploi au Maroc. Il scrape quotidiennement les offres d'emploi, les stocke dans Snowflake, les transforme avec dbt, et les visualise dans Power BI.
+Ce projet vise à **automatiser la collecte, le stockage, la transformation et l'analyse** des offres d'emploi tech au Maroc. Un pipeline ELT moderne extrait quotidiennement les offres depuis **rekrute.ma**, les stocke dans **Snowflake**, les transforme avec **dbt**, et les visualise dans un **dashboard Power BI**.
 
 ### Problématique
-- Offres d'emploi tech dispersées sur plusieurs sites
-- Absence de vision centralisée sur les compétences recherchées
-- Difficulté à suivre les tendances (villes, contrats, salaires)
+- 📌 Offres d'emploi dispersées sur plusieurs sites  
+- 📌 Pas de vision centralisée sur les compétences recherchées  
+- 📌 Difficulté à suivre les tendances (villes, contrats, salaires)  
+- 📌 Aucune analyse automatisée du marché tech marocain  
 
 ### Objectifs
-- ✅ Centraliser automatiquement les offres d'emploi 
-- ✅ Nettoyer et standardiser les données
-- ✅ Extraire des tendances (compétences, villes, contrats)
-- ✅ Permettre la recherche et la visualisation
+- ✅ Centraliser automatiquement les offres d'emploi tech  
+- ✅ Nettoyer et standardiser les données  
+- ✅ Extraire des tendances (compétences, villes, contrats)  
+- ✅ Visualiser les résultats dans un dashboard interactif  
 
 ---
 
 ## 🏗️ Architecture
-┌─────────────────────────────────────────────────────────────────────────────────────┐
-│ │
-│ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ │
-│ │ SOURCE │ │ SCRAPER │ │ ORCHESTRATEUR│ │
-│ │ │ │ │ │ │ │
-│ │ rekrute.ma │ ────► │ Python + │ ────► │ Airflow │ │
-│ │ │ │ BeautifulSoup│ │ (Docker) │ │
-│ └──────────────┘ └──────────────┘ └──────────────┘ │
-│ │
-│ │
-│ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ │
-│ │ DATA WAREHOUSE│ │ TRANSFORMATION│ │ VISUALISATION│ │
-│ │ │ │ │ │ │ │
-│ │ Snowflake │ ────► │ dbt │ ────► │ Power BI │ │
-│ │ Bronze/Silver/Gold│ │ (SQL) │ │ │ │
-│ └──────────────┘ └──────────────┘ └──────────────┘ │
-│ │
-│ ⚡ ELT : Extract → Load → Transform │
-└─────────────────────────────────────────────────────────────────────────────────────┘
 
+### Stack technique
+
+| Catégorie        | Technologie              | Rôle |
+|------------------|--------------------------|------|
+| **Scraping**     | Python + BeautifulSoup  | Extraction des offres |
+| **Orchestration**| Apache Airflow (Docker) | Automatisation quotidienne |
+| **Stockage**     | Snowflake               | Data Warehouse (Bronze/Silver/Gold) |
+| **Transformation**| dbt                    | Nettoyage et modélisation SQL |
+| **Visualisation**| Power BI                | Dashboard interactif |
+
+### Pipeline ELT
+
+```
+┌─────────────┐   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐
+│ rekrute.ma  │ → │ Python      │ → │ Airflow     │ → │ Snowflake   │
+│ (Source)    │   │ BeautifulSoup│   │ (Docker)    │   │ (Bronze)    │
+└─────────────┘   └─────────────┘   └─────────────┘   └──────┬──────┘
+                                                             │
+                                                             ▼
+┌─────────────┐   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐
+│ Power BI    │ ← │ dbt         │ ← │ Snowflake   │ ← │ Snowflake   │
+│ (Dashboard) │   │ (SQL)       │   │ (Gold)      │   │ (Silver)    │
+└─────────────┘   └─────────────┘   └─────────────┘   └─────────────┘
+```
 
 ### Modèle en Médaillon (Bronze/Silver/Gold)
 
-| Couche | Contenu | Rôle |
-|--------|---------|------|
-| **BRONZE** | JSON brut des offres | Stockage原始, aucune transformation |
-| **SILVER** | Données nettoyées | Villes normalisées, contrats typés, déduplication |
-| **GOLD** | Données agrégées | KPIs, top compétences, tendances |
-
----
-
-## 🛠️ Technologies utilisées
-
-| Catégorie | Technologie | Rôle |
-|-----------|-------------|------|
-| **Scraping** | Python + BeautifulSoup | Extraction des offres depuis rekrute.ma |
-| **Orchestration** | Apache Airflow | Automatisation quotidienne (0 6 * * *) |
-| **Conteneurisation** | Docker | Environnement reproductible |
-| **Stockage** | Snowflake | Data Warehouse cloud (JSON natif) |
-| **Transformation** | dbt | Nettoyage et modélisation SQL |
-| **Visualisation** | Power BI | Dashboard interactif |
+| Couche   | État                | Contenu |
+|----------|---------------------|---------|
+| **Bronze** | Données brutes     | JSON brut stocké en VARIANT Snowflake |
+| **Silver** | Données nettoyées  | Villes normalisées, contrats typés, déduplication |
+| **Gold**   | Données analytiques| Agrégations, KPIs, compétences extraites |
 
 ---
 
@@ -68,40 +61,41 @@ Ce projet met en place un **pipeline ELT automatisé** pour analyser le marché 
 
 ### Statistiques (avril 2026)
 
-| Métrique | Valeur |
-|----------|--------|
-| Offres scrapées (brutes) | 305 |
-| Offres tech (Silver/Gold) | 200 |
-| Compétences identifiées | 60+ |
-| Villes couvertes | 15 |
+| Métrique                     | Valeur |
+|-----------------------------|--------|
+| Offres scrapées (brutes)    | 305    |
+| Offres tech (analysées)     | 200    |
+| Compétences identifiées     | 60+    |
+| Villes couvertes            | 15     |
+| Fréquence d'exécution       | Quotidienne (6h00) |
 
 ### Top compétences recherchées
 
-| Compétence | Nombre d'offres |
-|------------|-----------------|
-| Python | 134 |
-| SQL | 196 |
-| Spark | 206 |
-| Docker | 87 |
-| AWS | 78 |
+| Compétence | Nombre d'offres | % des offres |
+|------------|----------------|--------------|
+| SQL        | 196            | 38%          |
+| Spark      | 206            | 38%          |
+| Python     | 134            | 25%          |
+| Docker     | 87             | 16%          |
+| AWS        | 78             | 15%          |
 
 ### Villes les plus dynamiques
 
-| Ville | Offres tech |
-|-------|-------------|
-| Casablanca | 326 |
-| Rabat | 210 |
-| Marrakech | 100 |
-| Tanger | 75 |
+| Ville        | Offres tech |
+|--------------|------------|
+| Casablanca   | 326        |
+| Rabat        | 210        |
+| Marrakech    | 100        |
+| Tanger       | 75         |
 
 ### Types de contrat
 
-| Contrat | Pourcentage |
-|---------|-------------|
-| CDI | 68% |
-| CDD | 18% |
-| Stage | 9% |
-| Freelance | 5% |
+| Contrat   | Pourcentage |
+|----------|-------------|
+| CDI      | 68%         |
+| CDD      | 18%         |
+| Stage    | 9%          |
+| Freelance| 5%          |
 
 ---
 
@@ -109,28 +103,154 @@ Ce projet met en place un **pipeline ELT automatisé** pour analyser le marché 
 
 ### Prérequis
 
-- Docker Desktop
+- Docker Desktop (Windows/Mac)
 - Python 3.8+
-- Compte Snowflake (gratuit)
+- Compte Snowflake (gratuit 30 jours)
 - Git
 
-### Étapes
+### Cloner le projet
 
 ```bash
-# 1. Cloner le projet
 git clone https://github.com/ElmghariBasma/job_market_pipeline.git
 cd job_market_pipeline
+```
 
-# 2. Configurer les variables d'environnement
+### Configuration
+
+Copier les fichiers d'environnement :
+
+```bash
 cp .env.example .env
-# Éditer .env avec vos identifiants Snowflake
-
-# 3. Configurer dbt
 cp dbt/profiles.yml.example dbt/profiles.yml
-# Éditer avec vos identifiants Snowflake
+```
 
-# 4. Lancer Airflow
+Remplir les identifiants Snowflake dans `.env` et `profiles.yml`.
+
+Installer les dépendances Python :
+
+```bash
+pip install -r requirements.txt
+```
+
+### Lancer Airflow avec Docker
+
+```bash
 docker-compose -f docker-compose-simple.yml up -d
+```
 
-# 5. Accéder à l'interface Airflow
-# http://localhost:8080 (admin/admin)
+Accéder à l'interface Airflow :  
+👉 http://localhost:8080 (admin/admin)
+
+### Lancer le DAG
+
+- Ouvrir http://localhost:8080  
+- Activer le DAG `rekrute_pipeline_complet`  
+- Cliquer sur **Trigger DAG**
+
+---
+
+## 📁 Structure du projet
+
+```
+job_market_pipeline/
+│
+├── dags/
+│   └── rekrute_pipeline_dag.py
+│
+├── plugins/
+│   ├── test_rekrute.py
+│   ├── merge_json.py
+│   └── load_to_snowflake_bronze.py
+│
+├── dbt/
+│   ├── models/
+│   │   ├── bronze/bronze_jobs.sql
+│   │   ├── silver/silver_jobs.sql
+│   │   └── gold/gold_jobs.sql
+│   └── seeds/villes_mapping.csv
+│
+├── docs/
+│   └── screenshots/
+│
+├── docker-compose-simple.yml
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## 📊 Dashboard Power BI
+
+### Aperçu
+![Dashboard](docs/screenshots/powerbi_dashboard.jpeg)
+
+### Accès
+- 📁 Fichier `.pbix` : `dashboard.pbix`
+- 🔗 Lien interactif : Power BI Service
+
+### KPIs disponibles
+- Top compétences par région  
+- Villes les plus dynamiques (carte)  
+- Répartition des types de contrat  
+- Évolution temporelle des offres  
+
+---
+
+## 🔧 Difficultés rencontrées et solutions
+
+| Problème                          | Solution |
+|----------------------------------|----------|
+| Anti-scraping du site           | User-Agent réaliste + délais aléatoires |
+| Docker lent sur Windows         | Utilisation locale pour debug |
+| Scripts exécutés automatiquement| `if __name__ == "__main__"` |
+| Doublons                        | Déduplication par URL |
+| dbt non configuré               | Création manuelle des fichiers |
+
+---
+
+## 📈 Perspectives d'amélioration
+
+| Court terme         | Moyen terme              | Long terme            |
+|--------------------|--------------------------|----------------------|
+| Ajouter Elasticsearch | Intégrer Indeed/Emploi.ma | Pipeline temps réel |
+| Alertes email        | Détection des salaires   | Analyse NLP |
+| Tests dbt            | Dashboard en ligne       | Déploiement cloud |
+
+---
+
+## 👥 Auteurs
+
+| Nom               | Rôle |
+|------------------|------|
+| Basma Elmghari   | Extraction, Orchestration, Data Warehouse |
+| [Nom collègue]   | Transformation, Visualisation |
+
+---
+
+## 📅 Soutenance
+
+- Date : [à compléter]  
+- Durée : 45-60 minutes  
+- Support : [lien slides]  
+
+---
+
+## 📄 Licence
+
+Projet sous licence MIT.
+
+---
+
+## 🙏 Remerciements
+
+- rekrute.ma (usage académique)  
+- Snowflake (compte gratuit)  
+- Apache Airflow  
+- dbt Labs  
+
+---
+
+## 📞 Contact
+
+- GitHub : ElmghariBasma  
+- Email : [votre email]  
