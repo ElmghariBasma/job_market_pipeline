@@ -1,1 +1,0 @@
-cat: '/opt/airflow/logs/dag_id=rekrute_pipeline_complet/run_id=manual__*/task_id=scrape_rekrute/attempt=1.log': No such file or directory
